@@ -144,6 +144,11 @@
           listEl.textContent = row;
           div.appendChild(listEl);
         }
+        // add copyright
+        const copyright = document.createElement("div");
+        copyright.setAttribute("id", "copyright");
+        copyright.textContent = "© EttAndetag";
+        div.appendChild(copyright);
       }
 
       textarea.addEventListener("keyup", () => {
