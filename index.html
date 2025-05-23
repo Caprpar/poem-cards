@@ -26,9 +26,9 @@
         margin: 0;
       }
       body {
-        width: 100dvw;
-        height: 89dvw;
-        display: flex;
+        /* width: 100dvw;
+        height: 89dvw; */
+        /* display: flex; */
         flex-direction: column;
         justify-content: center;
         align-items: center;
@@ -40,7 +40,7 @@
         align-items: center;
         justify-content: center;
         height: 40em;
-        width: 100%;
+        width: auto;
         border: double 1em;
         aspect-ratio: 1/1;
         background-color: #b5988d;
@@ -84,7 +84,8 @@
   </head>
   <body>
     <main>
-      <section id="targetDiv">
+      <textarea name="" id="poem-input"></textarea>
+      <section id="cream">
         <h1>förändrad</h1>
         <ul>
           <li>jag ser på dig</li>
@@ -110,8 +111,10 @@
     </main>
     <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
     <script>
+      const cream = document.querySelector("#cream");
+      const textarea = document.querySelector("#poem-input");
       function saveDivAsImage() {
-        const element = document.getElementById("targetDiv");
+        const element = document.getElementById("cream");
         html2canvas(element).then((canvas) => {
           const link = document.createElement("a");
           link.download = "div-snapshot.png";
@@ -119,6 +122,38 @@
           link.click();
         });
       }
+
+      function cleanDiv(div) {
+        while (div.childNodes.length > 0) {
+          div.removeChild(div.childNodes[0]);
+        }
+      }
+
+      function fillDiv(div, poemArray) {
+        cleanDiv(div);
+        // const temp = document.querySelector("targetDiv");
+        const headerText = poemArray.splice(0, 1);
+        const header = document.createElement("h1");
+        header.textContent = headerText;
+        // Add header
+        div.appendChild(header);
+
+        // Add all rows
+        for (const row of poemArray) {
+          const listEl = document.createElement("li");
+          listEl.textContent = row;
+          div.appendChild(listEl);
+        }
+      }
+
+      textarea.addEventListener("keyup", () => {
+        console.log(textarea.value);
+        const poemArr = textarea.value
+          .split(/\r?\n/) // Dela på radbrytning
+          .map((line) => line.trim()) // Trimma bort tomrum
+          .filter((line) => line);
+        fillDiv(cream, poemArr);
+      });
     </script>
   </body>
 </html>
